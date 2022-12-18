@@ -13,12 +13,36 @@
     itinerary: string;
   }
 
+  let currentIndex = 0;
+
   export let data: Array<Destination>;
+
+  function minusCurrentIndex() {
+    if (currentIndex <= 0) {
+      currentIndex = data.length - 1;
+      return;
+    }
+
+    currentIndex = currentIndex - 1;
+  }
+
+  function plusCurrentIndex() {
+    if (currentIndex >= data.length - 1) {
+      currentIndex = 0;
+      return;
+    }
+
+    currentIndex = currentIndex + 1;
+  }
 </script>
 
 <main>
-  {#each data as dest}
-    <section class="content">
+  {#each data as dest, i}
+    <section
+      class="content"
+      id={dest.id}
+      data-status={i == currentIndex ? "active" : "unknown"}
+    >
       <div
         style={`background: url(${dest.image}); background-repeat: no-repeat;
     background-size: cover;
@@ -49,8 +73,13 @@
         <img src={plusButton} alt={plusButton} id="plusBtn" />
       </div>
       <div class="sec4">
-        <img src={leftArrow} alt={leftArrow} id="leftNav" />
-        <img src={rightArrow} alt={rightArrow} id="rightNav" />
+        <button id="leftNav" on:click={() => minusCurrentIndex()}>
+          <img src={leftArrow} alt={leftArrow} />
+        </button>
+
+        <button id="rightNav" on:click={() => plusCurrentIndex()}>
+          <img src={rightArrow} alt={rightArrow} />
+        </button>
       </div>
     </section>
   {/each}
@@ -61,6 +90,18 @@
     height: 90vh;
     width: 100%;
     position: relative;
+  }
+
+  button {
+    background-color: transparent;
+  }
+
+  section[data-status="unknown"] {
+    transform: scale(0);
+  }
+
+  section[data-status="active"] {
+    transform: scale(100%);
   }
 
   .content {
