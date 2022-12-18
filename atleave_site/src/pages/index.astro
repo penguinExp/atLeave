@@ -1,130 +1,16 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import leftArrow from "../assets/leftArrow.svg";
-import rightArrow from "../assets/rightArrow.svg";
-import plusButton from "../assets/plusButton.svg";
+import HomeView from "../views/HomeView.svelte";
+
+const response = await fetch("http://localhost:8888/destination")
+  .then((res) => res.json())
+  .then((data) => {
+    return data["data"];
+  });
 ---
 
 <Layout title="AtLeave">
-  <main>
-    <section class="content">
-      <div id="imgSec"></div>
-      <div class="sec2">
-        <div class="contentSec">
-          <p class="title">Duration</p>
-          <p class="body">3 Days 4 Nights</p>
-        </div>
-        <div class="contentSec">
-          <p class="title">From</p>
-          <p class="body">Chandigarh</p>
-        </div>
-        <div class="contentSec">
-          <p class="title">Price</p>
-          <p class="body">Rs. 8000 (Per Head)</p>
-        </div>
-        <div class="contentSec">
-          <p class="title">Itenerary</p>
-          <p class="body">
-            3 star hotel, super deluxe rooms, bonfire and DJ at night, breakfast
-            and dinner included. Travelling is done by privet vehicles
-          </p>
-        </div>
-      </div>
-      <div class="sec3">
-        <h1>Manali Itenary</h1>
-        <img src={plusButton} alt={plusButton} />
-      </div>
-      <div class="sec4">
-        <img src={leftArrow} alt={leftArrow} id="leftNav" />
-        <img src={rightArrow} alt={rightArrow} id="rightNav" />
-      </div>
-    </section>
-  </main>
+  <HomeView data={response} client:only="svelte"/>
 </Layout>
 
-<style>
-  main {
-    height: 90vh;
-    width: 100%;
-  }
-
-  .content {
-    width: 100%;
-    height: 100%;
-    display: grid;
-    grid-template-columns: 2fr 0.95fr;
-    grid-template-rows: 2fr 1fr;
-  }
-
-  #imgSec {
-    background: url("https://images.unsplash.com/photo-1579689189009-874f5cac2db5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: 10%;
-  }
-
-  .sec2 {
-    display: flex;
-    flex-flow: column nowrap;
-    padding: 10px 40px;
-    justify-content: space-around;
-    border-left: 2px solid #1e2435;
-    box-sizing: border-box;
-  }
-
-  .sec2 > .contentSec > .title {
-    margin: 5px 0px;
-    font-style: normal;
-    font-size: 18px;
-    color: #a259ff;
-  }
-
-  .sec2 > .contentSec > .body {
-    margin: 0px;
-    font-style: normal;
-    font-size: 18px;
-  }
-
-  .sec3 {
-    padding: 0px 50px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 2px solid #1e2435;
-  }
-
-  .sec3 > h1 {
-    margin: 0px;
-    width: 20rem;
-    font-family: "Rubik";
-    font-style: normal;
-    font-weight: 800;
-    font-size: 80px;
-    line-height: 80px;
-  }
-
-  .sec4 {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    border-left: 2px solid #1e2435;
-    border-top: 2px solid #1e2435;
-  }
-
-  .sec4 > img {
-    transition: 0.3s;
-    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-  }
-
-  .sec4 > #leftNav:hover {
-    translate: -15px;
-    transition: 0.5s;
-    animation-timing-function: ease-in-out;
-  }
-
-  .sec4 > #rightNav:hover {
-    translate: 15px;
-    transition: 0.5s;
-    animation-timing-function: ease-in-out;
-  }
-</style>
+<style></style>

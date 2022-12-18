@@ -40,6 +40,7 @@ export class DestinationService {
           noOfDays: dataArray[i]['noOfDays'],
           price: dataArray[i]['price'],
           title: dataArray[i]['title'],
+          itinerary: dataArray[i]['itinerary'],
         }),
       );
     }
