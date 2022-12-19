@@ -14,6 +14,12 @@
 
     activeIndex = activeIndex + 1;
   }
+
+  function navigateToBooking() {
+    window.location.assign(
+      "http://127.0.0.1:3000/book?name=Kanyakumari%20Itinerary&id=7"
+    );
+  }
 </script>
 
 <main>
@@ -82,7 +88,7 @@
       <img src={hate} alt={hate} />
     </button>
 
-    <button id="rightNav">
+    <button id="rightNav" on:click={() => navigateToBooking()}>
       <img src={love} alt={love} />
     </button>
   </div>
@@ -149,7 +155,6 @@
     height: 60px;
     transition: scale 800ms cubic-bezier(0.05, 0.43, 0.25, 0.95);
     padding-top: 3px;
-
   }
 
   .buttons {
@@ -158,7 +163,6 @@
     padding-right: 35px;
     padding-bottom: 50px;
     padding-top: 50px;
-
   }
 
   .buttons > #rightNav {

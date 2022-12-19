@@ -34,6 +34,10 @@
 
     currentIndex = currentIndex + 1;
   }
+
+  function navigateToBooking(name: string, id: string) {
+    window.location.assign(`http://127.0.0.1:3000/book?name=${name}&id=${id}`);
+  }
 </script>
 
 <main>
@@ -70,7 +74,12 @@
       </div>
       <div class="sec3">
         <h1>{dest.title}</h1>
-        <img src={plusButton} alt={plusButton} id="plusBtn" />
+        <button
+          id="plusBtn"
+          on:click={() => navigateToBooking(dest.title, dest.id)}
+        >
+          <img src={plusButton} alt={plusButton} />
+        </button>
       </div>
       <div class="sec4">
         <button id="leftNav" on:click={() => minusCurrentIndex()}>
@@ -161,7 +170,8 @@
     border-top: 2px solid #1e2435;
   }
 
-  .sec4 > img {
+  .sec4 > button {
+    cursor: pointer;
     transition: 0.3s;
     animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
   }
@@ -179,6 +189,7 @@
   }
 
   .sec3 > #plusBtn {
+    cursor: pointer;
     transition: 0.5s;
     animation-timing-function: ease-in-out;
   }
