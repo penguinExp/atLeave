@@ -20,7 +20,7 @@ export class BookingsService {
         email: dto.email,
         phone: dto.phone,
         name: dto.name,
-        peoples: dto.peoples,
+        peoples: parseInt(dto.peoples),
         destination: dto.destination,
       },
     ]);

@@ -20,4 +20,19 @@ export class DestinationController {
 
     return res;
   }
+
+  @Get('pics')
+  async getDestinationPics(): Promise<ResponseDTO> {
+    let res = new ResponseDTO();
+
+    res = await this.service.getDestinationsPics();
+
+    if (!res.error) {
+      res.message = ['Successfully fetched the data'];
+      res.statusCode = HttpStatus.OK;
+      res.error = null;
+    }
+
+    return res;
+  }
 }

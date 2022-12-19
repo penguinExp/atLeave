@@ -44,12 +44,20 @@ export class DestinationDto {
   })
   noOfDays: string;
 
-  constructor({ id, image, title, from, noOfDays, price }) {
+  @ApiProperty({
+    name: 'itinerary',
+    type: String,
+    description: 'Description about the tour',
+  })
+  itinerary: string;
+
+  constructor({ id, image, title, from, noOfDays, price, itinerary }) {
     this.from = from;
     this.id = id;
     this.image = image;
     this.noOfDays = noOfDays;
     this.price = price;
     this.title = title;
+    this.itinerary = itinerary;
   }
 }

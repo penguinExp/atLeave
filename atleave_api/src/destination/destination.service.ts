@@ -40,11 +40,38 @@ export class DestinationService {
           noOfDays: dataArray[i]['noOfDays'],
           price: dataArray[i]['price'],
           title: dataArray[i]['title'],
+          itinerary: dataArray[i]['itinerary'],
         }),
       );
     }
 
     res.data = destinations;
+
+    return res;
+  }
+
+  /**
+   * Getting data from the `destination` table
+   *
+   * @returns {ResponseDTO}
+   */
+  async getDestinationsPics(): Promise<ResponseDTO> {
+    //
+    const res = new ResponseDTO();
+
+    const { data, error } = await supabase
+      .from('destination')
+      .select('pics')
+      .limit(10);
+
+    if (error?.code) {
+      res.statusCode = HttpStatus.AMBIGUOUS;
+      res.message = [error.message, error.code];
+      res.error = error.hint;
+      return res;
+    }
+
+    res.data = data;
 
     return res;
   }
