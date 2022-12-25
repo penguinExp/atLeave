@@ -53,9 +53,19 @@
 
 <main>
   <h4>Book your consultation for {name} tour with the team</h4>
-  <input id="name" type="name" placeholder="Please enter your name" />
-  <input id="email" type="email" placeholder="Please enter your email" />
-  <input id="phone" type="phone" placeholder="Please enter your phone" />
+  <input id="name" type="name" placeholder="Please enter your name" required />
+  <input
+    id="email"
+    type="email"
+    placeholder="Please enter your email"
+    required
+  />
+  <input
+    id="phone"
+    type="phone"
+    placeholder="Please enter your phone"
+    required
+  />
   <input
     id="number"
     type="number"
