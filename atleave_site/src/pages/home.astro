@@ -1,0 +1,16 @@
+---
+import Layout from "../layouts/Layout.astro";
+import HomeView from "../views/HomeView.svelte";
+
+const response = await fetch("http://localhost:8888/destination")
+  .then((res) => res.json())
+  .then((data) => {
+    return data["data"];
+  });
+---
+
+<Layout title="AtLeave">
+  <HomeView data={response} client:only="svelte" />
+</Layout>
+
+<style></style>
