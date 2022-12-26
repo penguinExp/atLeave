@@ -28,11 +28,11 @@ export class AuthController {
     @Query('email') email: string,
     @Query('passwd') passwd: string,
   ): Promise<ResponseDTO> {
-    return this.service.logInUser(email, passwd);
+    return await this.service.logInUser(email, passwd);
   }
 
   @Post()
   async signupUser(@Body() body: any): Promise<ResponseDTO> {
-    return this.service.createAuthUser(body.email, body.passwd);
+    return await this.service.createAuthUser(body.email, body.passwd);
   }
 }

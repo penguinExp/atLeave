@@ -27,6 +27,8 @@ export class AuthService {
       .eq('email', email)
       .single();
 
+    console.log(data);
+
     if (data.email == email && data.passwd == passwd) {
       res.data = { uid: data.id };
       res.error = null;

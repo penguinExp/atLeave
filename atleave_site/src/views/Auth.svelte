@@ -8,7 +8,6 @@
   let hasError = false;
 
   async function postCall(d) {
-    isLoading = true;
     let headersList = {
       Accept: "*/*",
       "Content-Type": "application/json",
@@ -24,40 +23,34 @@
   }
 
   async function loginCall() {
+    const element = document.getElementById("input");
+
     passwd = element?.value;
 
-    console.log("Login call");
+    const res = await fetch(
+      `http://localhost:8888/auth?email=${email}&passwd=${passwd}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        return data;
+      });
 
-    if (!isLoading) {
-      const res = await fetch(
-        `http://localhost:8888/auth?email=${email}&passwd=${passwd}`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          return data;
-        });
-
-      if (res["data"]) {
-        hasError = false;
-        window.location.assign("http://127.0.0.1:3000/home");
-      } else {
-        hasError = true;
-      }
+    if (res["data"]) {
+      hasError = false;
+      window.location.assign("http://127.0.0.1:3000/home");
+    } else {
+      hasError = true;
     }
   }
 
   async function signUpCall() {
+    const element = document.getElementById("input");
+
     passwd = element?.value;
 
-    if (!isLoading) {
-      let res = await postCall(
-        JSON.stringify({ email: email, passwd: passwd })
-      );
+    let res = await postCall(JSON.stringify({ email: email, passwd: passwd }));
 
-      if (res["statusCode"] == 201) {
-        window.location.assign("http://127.0.0.1:3000/home");
-      }
-    }
+    window.location.assign("http://127.0.0.1:3000/home");
   }
 
   async function checkEmail() {
@@ -65,8 +58,6 @@
 
     if (!email) {
       email = element?.value;
-
-      isLoading = true;
 
       const response = await fetch(
         `http://localhost:8888/auth/email?email=${email}`
@@ -82,10 +73,43 @@
         isExists = false;
       }
 
-      isLoading = false;
-
       element.value = "";
       element.placeholder = "Enter your password";
+    }
+  }
+
+  async function authenticate() {
+    if (isLoading) return;
+
+    console.log(document.getElementById("input").value);
+
+    if (email == null) {
+      isLoading = true;
+
+      await checkEmail();
+
+      isLoading = false;
+      return;
+    }
+
+    if (isExists) {
+      isLoading = true;
+
+      await loginCall();
+
+      isLoading = false;
+
+      return;
+    }
+
+    if (!isExists) {
+      isLoading = true;
+
+      await signUpCall();
+
+      isLoading = false;
+
+      return;
     }
   }
 </script>
@@ -101,7 +125,7 @@
     type="button"
     value={isLoading ? "...Loading" : "Continue"}
     id="button"
-    on:click={!passwd ? checkEmail() : isExists ? loginCall() : signUpCall()}
+    on:click={authenticate}
   />
 </section>
 
