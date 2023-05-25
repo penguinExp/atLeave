@@ -41,9 +41,7 @@
   }
 
   function navigateToReview(name: string, id: string) {
-    window.location.assign(
-      `http://127.0.0.1:3000/review?name=${name}&id=${id}`
-    );
+    window.location.assign(`http://127.0.0.1:3000/review?id=${id}`);
   }
 </script>
 

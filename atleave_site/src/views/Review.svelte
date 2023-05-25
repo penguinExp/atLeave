@@ -1,30 +1,57 @@
 <script>
   import { onMount } from "svelte";
 
-  let reviews = [
-    {
-      text: "",
-      score: 4,
-    },
-    {
-      text: "",
-      score: 1,
-    },
-    {
-      text: "",
-      score: 5,
-    },
-    {
-      text: "",
-      score: 3,
-    },
-  ];
+  let id;
+
+  const p = new URLSearchParams(location.search);
+
+  id = p.get("id");
+
+  async function loadReviews() {
+    const res = await fetch(
+      `http://localhost:8888/destination/review?id=${id}`,
+      {
+        method: "GET",
+        headers: {
+          accept: "*/*",
+        },
+      }
+    ).then((response) => response.json());
+
+    reviews = res["data"];
+  }
+
+  async function submitReview() {
+    const inputText = document.getElementById("reviewText").value;
+
+    if (inputText.trim().length <= 0) {
+      return;
+    }
+
+    const data = {
+      destinationId: id,
+      text: inputText,
+    };
+
+    await fetch("http://localhost:8888/destination/review", {
+      method: "POST",
+      headers: {
+        accept: "*/*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    location.reload();
+  }
+
+  let reviews = [];
 
   function calculateAverageScore() {
     let total = 0;
 
     for (var i = 0; i < reviews.length; i++) {
-      total += reviews[i].score;
+      total += reviews[i].rating;
     }
 
     avgScore = total / reviews.length;
@@ -32,7 +59,9 @@
 
   let avgScore = 0;
 
-  onMount(() => {
+  onMount(async () => {
+    await loadReviews();
+
     calculateAverageScore();
   });
 </script>
@@ -46,22 +75,24 @@
       <h6>5</h6>
     </div>
   </div>
-  <div class="reviews">
-    {#each reviews as review}
-      <div class="review">
-        <p class="text">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta
-          delectus quis eveniet consectetur, ratione unde sequi officiis.
-          quisquam?
-        </p>
-        <p class="score">{review.score} star</p>
-      </div>
-    {/each}
-  </div>
+  {#if reviews.length > 0}
+    <div class="reviews">
+      {#each reviews as review}
+        <div class="review">
+          <p class="text">
+            {review.text}
+          </p>
+          <p class="score">{review.rating} star</p>
+        </div>
+      {/each}
+    </div>
+  {:else}
+    <div class="reviewsMt">No reviews!</div>
+  {/if}
 </main>
 <div class="inputDiv">
-  <input id="name" type="text" placeholder="Please enter your name" />
-  <button on:click={() => {}}>Submit</button>
+  <input id="reviewText" type="text" placeholder="Please enter your name" />
+  <button on:click={() => submitReview()}>Submit</button>
 </div>
 
 <style>
@@ -98,6 +129,13 @@
     display: flex;
     flex-flow: column nowrap;
     width: 100%;
+  }
+
+  .reviewsMt {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
   }
 
   .review {
