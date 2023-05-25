@@ -3,6 +3,8 @@
 
   let name, id;
 
+  let isSubmitted = false;
+
   function extractData() {
     const p = new URLSearchParams(location.search);
 
@@ -40,10 +42,12 @@
 
     await apiCall(d);
 
-    document.getElementById("name").value = "";
-    document.getElementById("email").value = "";
-    document.getElementById("phone").value = "";
-    document.getElementById("number").value = "";
+    // document.getElementById("name").value = "";
+    // document.getElementById("email").value = "";
+    // document.getElementById("phone").value = "";
+    // document.getElementById("number").value = "";
+
+    isSubmitted = true;
   }
 
   onMount(() => {
@@ -52,26 +56,55 @@
 </script>
 
 <main>
-  <h4>Book your consultation for {name} tour with the team</h4>
-  <input id="name" type="name" placeholder="Please enter your name" />
-  <input id="email" type="email" placeholder="Please enter your email" />
-  <input id="phone" type="phone" placeholder="Please enter your phone" />
-  <input
-    id="number"
-    type="number"
-    placeholder="Please enter number of travelers"
-  />
-  <button on:click={() => submit()}>Book Now</button>
+  {#if !isSubmitted}
+    <div class="form">
+      <h4>Book your consultation for {name} tour with the team</h4>
+      <input id="name" type="name" placeholder="Please enter your name" />
+      <input id="email" type="email" placeholder="Please enter your email" />
+      <input id="phone" type="phone" placeholder="Please enter your phone" />
+      <input
+        id="number"
+        type="number"
+        placeholder="Please enter number of travelers"
+      />
+      <button on:click={() => submit()}>Book Now</button>
+    </div>
+  {:else}
+    <div class="submission">
+      <p>Request Submitted Successfully!</p>
+      <button
+        on:click={() => {
+          location.replace("/");
+        }}>Back To Home</button
+      >
+    </div>
+  {/if}
 </main>
 
 <style>
   main {
+    height: 75vh;
+    padding: 0px 60vmin;
+  }
+
+  .form {
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-around;
     flex-flow: column nowrap;
-    height: 75vh;
-    padding: 0px 60vmin;
+  }
+
+  .submission {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-flow: column nowrap;
+    justify-content: center;
+  }
+
+  .submission > button {
+    max-width: 50%;
   }
 
   h4 {
@@ -99,6 +132,7 @@
     height: 40px;
     border-radius: 5px;
     color: white;
+    border: none;
   }
 
   input:focus {

@@ -96,8 +96,10 @@
 
 <style>
   main {
-    height: 90vh;
     width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    height: 90vh;
     position: relative;
   }
 
@@ -192,6 +194,12 @@
     cursor: pointer;
     transition: 0.5s;
     animation-timing-function: ease-in-out;
+  }
+
+  #rightNav,
+  #leftNav,
+  #plusBtn {
+    border: none;
   }
 
   .sec3 > #plusBtn:hover {
