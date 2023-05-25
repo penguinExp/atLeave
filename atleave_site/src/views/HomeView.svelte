@@ -1,7 +1,8 @@
 <script lang="ts">
   import leftArrow from "../assets/leftArrow.svg";
   import rightArrow from "../assets/rightArrow.svg";
-  import plusButton from "../assets/plusButton.svg";
+  import book from "../assets/book.svg";
+  import review from "../assets/review.svg";
 
   interface Destination {
     from: string;
@@ -37,6 +38,12 @@
 
   function navigateToBooking(name: string, id: string) {
     window.location.assign(`http://127.0.0.1:3000/book?name=${name}&id=${id}`);
+  }
+
+  function navigateToReview(name: string, id: string) {
+    window.location.assign(
+      `http://127.0.0.1:3000/review?name=${name}&id=${id}`
+    );
   }
 </script>
 
@@ -74,12 +81,20 @@
       </div>
       <div class="sec3">
         <h1>{dest.title}</h1>
-        <button
-          id="plusBtn"
-          on:click={() => navigateToBooking(dest.title, dest.id)}
-        >
-          <img src={plusButton} alt={plusButton} />
-        </button>
+        <div>
+          <button
+            id="rateBtn"
+            on:click={() => navigateToReview(dest.title, dest.id)}
+          >
+            <img src={review} alt={review} />
+          </button>
+          <button
+            id="bookBtn"
+            on:click={() => navigateToBooking(dest.title, dest.id)}
+          >
+            <img src={book} alt={book} />
+          </button>
+        </div>
       </div>
       <div class="sec4">
         <button id="leftNav" on:click={() => minusCurrentIndex()}>
@@ -105,6 +120,7 @@
 
   button {
     background-color: transparent;
+    border: none;
   }
 
   section[data-status="unknown"] {
@@ -190,21 +206,30 @@
     animation-timing-function: ease-in-out;
   }
 
-  .sec3 > #plusBtn {
+  .sec3 > div {
+    display: flex;
+    justify-content: space-around;
+    flex-flow: row nowrap;
+    gap: 20px;
+    width: 20rem;
+  }
+
+  .sec3 > div > button {
     cursor: pointer;
     transition: 0.5s;
     animation-timing-function: ease-in-out;
   }
 
-  #rightNav,
-  #leftNav,
-  #plusBtn {
-    border: none;
+  .sec3 > div > button > img {
+    object-fit: cover;
+    width: 90px;
+    height: 90px;
   }
 
-  .sec3 > #plusBtn:hover {
+  #rateBtn:hover,
+  #bookBtn:hover {
     transition: 0.5s;
-    transform: rotate(-90deg);
+    transform: scale(120%);
     animation-timing-function: ease-in-out;
   }
 </style>
