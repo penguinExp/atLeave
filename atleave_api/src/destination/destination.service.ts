@@ -1,7 +1,9 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { DestinationDto } from 'src/core/dto/destination.dto';
 import { ResponseDTO } from 'src/core/dto/response.dto';
+import { ReviewDto } from 'src/core/dto/review.dto';
 import { supabase } from 'src/core/supabase';
+import axios from 'axios';
 
 @Injectable()
 export class DestinationService {
@@ -74,5 +76,58 @@ export class DestinationService {
     res.data = data;
 
     return res;
+  }
+
+  async createReview(body: ReviewDto): Promise<ResponseDTO> {
+    const res = new ResponseDTO();
+
+    const score = await this.calculateScore(body.text);
+
+    const { data, error } = await supabase.from('reviews').insert([
+      {
+        destination_id: body.destinationId,
+        rating: score,
+        text: body.text,
+      },
+    ]);
+
+    if (error) {
+      res.statusCode = HttpStatus.AMBIGUOUS;
+      res.message = [error.message, error.code];
+      res.error = error.hint;
+      return res;
+    }
+
+    res.data = data;
+
+    return res;
+  }
+
+  async fetchReviews(id: number) {
+    const res = new ResponseDTO();
+
+    const { data, error } = await supabase
+      .from('reviews')
+      .select(`*`)
+      .eq('destination_id', id);
+
+    if (error?.code) {
+      res.statusCode = HttpStatus.AMBIGUOUS;
+      res.message = [error.message, error.code];
+      res.error = error.hint;
+      return res;
+    }
+
+    res.data = data;
+
+    return res;
+  }
+
+  async calculateScore(text: string): Promise<number> {
+    let res = await axios.get(`http://127.0.0.1:8000/${text}`);
+
+    const score = res.data['res'];
+
+    return score;
   }
 }

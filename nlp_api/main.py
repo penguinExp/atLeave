@@ -4,9 +4,9 @@ from textblob import TextBlob
 
 app = FastAPI()
 
-@app.get("/")
-def read_root(body: dict = Body()):
-    textBlob = TextBlob(body['text'])
+@app.get("/{text}")
+def read_root(text):
+    textBlob = TextBlob(text)
     score = calculate_star_rating(textBlob.sentiment.polarity)
     return {'res': score}
 
