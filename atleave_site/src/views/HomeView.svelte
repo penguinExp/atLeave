@@ -37,11 +37,11 @@
   }
 
   function navigateToBooking(name: string, id: string) {
-    window.location.assign(`http://127.0.0.1:3000/book?name=${name}&id=${id}`);
+    window.location.assign(`http://localhost:3000/book?name=${name}&id=${id}`);
   }
 
   function navigateToReview(name: string, id: string) {
-    window.location.assign(`http://127.0.0.1:3000/review?id=${id}`);
+    window.location.assign(`http://localhost:3000/review?id=${id}`);
   }
 </script>
 

@@ -17,7 +17,7 @@
 
   function navigateToBooking() {
     window.location.assign(
-      "http://127.0.0.1:3000/book?name=Kanyakumari%20Itinerary&id=7"
+      "http://localhost:3000/book?name=Kanyakumari%20Itinerary&id=7"
     );
   }
 </script>
